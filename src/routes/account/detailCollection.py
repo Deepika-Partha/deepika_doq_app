@@ -13,7 +13,7 @@ import os
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-client = OpenAI(api_key="sk-proj-yWVoHPXnxTCB1GHjY5qQT3BlbkFJ5yfmSnjthvXjL7kzy3sk")
+client = OpenAI(api_key="API_KEY")
 
 def format_tickets_to_faqs(tickets):
     faqs = []
