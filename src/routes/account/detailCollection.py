@@ -1,17 +1,16 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, jsonify # type: ignore
+from flask_cors import CORS # type: ignore
 
-import hubspot
-from hubspot.crm.tickets import ApiException
+import hubspot # type: ignore
+from hubspot.crm.tickets import ApiException # type: ignore
 
-import openai
-from openai import OpenAI
+import openai   # type: ignore
+from openai import OpenAI   # type: ignore
 
 import os
 
 
 app = Flask(__name__)
-# CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 client = OpenAI(api_key="sk-proj-yWVoHPXnxTCB1GHjY5qQT3BlbkFJ5yfmSnjthvXjL7kzy3sk")
@@ -81,7 +80,6 @@ def get_tickets():
         return jsonify({"myFAQs": myFAQs})
 
     except ApiException as e:
-        # Handle exceptions and return an error message
         error_message = f"Exception when calling TicketsApi->get_page: {e}\n"
         return jsonify({"error": error_message}), 500
 

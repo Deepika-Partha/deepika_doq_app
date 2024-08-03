@@ -47,8 +47,8 @@
     <!-- svelte-ignore a11y-img-redundant-alt -->
     <img src="https://images.squarespace-cdn.com/content/v1/64ba92ff4c24fe41a3c67b1d/1689953074945-9WI8FKUEAOY9HQX8636Q/Sleek+Objects+1.jpg" alt="Header Image">
     <div class="header-text">qBotica</div>
-    <div class="account">
-      <a href="/account" class="account-button">Connect your HubSpot Account</a>
+    <div class="doqvault">
+      <a href="/doqvault" class="doqvault-button">Redirect to DoqVault</a>
     </div>
   </div>
 
@@ -160,15 +160,15 @@ main {
   font-size: 2em;
 }
 
-.account {
+.doqvault {
   position: absolute;
   top: 10px;
   right: 130px; /* Adjust this value to move the button left */
 }
 
-.account-button {
-  width: 1.5in;
-  height: 80px;
+.doqvault-button {
+  width: 2in;
+  height: 60px;
   background-color: hsla(22.54, 88.72%, 61.76%, 1);
   border: none;
   border-radius: 30px;
@@ -184,7 +184,7 @@ main {
   line-height: 1.2;
 }
 
-.account-button:hover {
+.doqvault-button:hover {
   background-color: rgba(189, 107, 6, 0.81);
 }
 
