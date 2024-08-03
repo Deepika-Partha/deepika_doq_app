@@ -15,6 +15,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 client = OpenAI(api_key="API_KEY")
 
+# This function takes the tickets from the HubsSpot account and formats them into a FAQ
 def format_tickets_to_faqs(tickets):
     faqs = []
     for ticket in tickets:
@@ -24,7 +25,7 @@ def format_tickets_to_faqs(tickets):
         faqs.append(faq)
     return faqs
 
-
+#  This functin takes the FAQs and groups them based on the content
 def group_faqs(faqs):
     myFAQs = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -37,6 +38,8 @@ def group_faqs(faqs):
 
 
 @app.route('/', methods=['POST'])
+
+#  This function scrapes all the tickets from the HubSpot account
 def get_tickets():
 
     data = request.json
@@ -70,6 +73,7 @@ def get_tickets():
         faqs = format_tickets_to_faqs(formatted_tickets)
         myFAQs = group_faqs(faqs)
 
+        #  Creates a .txt file with all the formatted FAQs
         faq_folder_path = os.path.join(os.getcwd(), 'src', 'routes', 'faqDocs')
         os.makedirs(faq_folder_path, exist_ok=True)
         faq_file_path = os.path.join(faq_folder_path, 'myFAQs.txt')
@@ -77,8 +81,9 @@ def get_tickets():
         with open(faq_file_path, "w") as file:
             file.write(myFAQs)
 
-        return jsonify({"myFAQs": myFAQs})
+        return jsonify({"faqs": faqs, "myFAQs": myFAQs})
 
+    #  In case anything does wrong or the API kwys provided are not valid this helps send an error message to the user's page
     except ApiException as e:
         error_message = f"Exception when calling TicketsApi->get_page: {e}\n"
         return jsonify({"error": error_message}), 500

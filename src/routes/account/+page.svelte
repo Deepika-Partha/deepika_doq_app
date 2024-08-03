@@ -29,15 +29,18 @@
 
           const data = await response.json();
           console.log(data);
-          // goto('/doqQuery');
-          // return data;
+
+          goto('/doqQuery');
+
+          // In case the data returned is needed
+          return data;
 
       } catch (error) {
           console.error('Error occurred:', error.message);
 
           // Create a new error container
           const errorContainer = document.createElement('div');
-          errorContainer.id = 'error-container'; // Add an ID to identify the container
+          errorContainer.id = 'error-container'; // ID to identify the container, this helps clear error message if error is resolved
           errorContainer.style.position = 'fixed';
           errorContainer.style.bottom = '0';
           errorContainer.style.left = '0';
@@ -58,6 +61,7 @@
 
       let errors = [];
 
+      //  Validations to ensure user information is provided
       if (!pineconeKey.trim()) {
           errors.push("Pinecone Key. ");
       }
@@ -156,7 +160,7 @@
     /* orange: background-color: #E9CEB0; */
     
     :global(body) {
-      background-color: #ffffff; /* Light orange */
+      background-color: #ffffff; 
       margin: 0;
       padding: 0;
       font-family: 'Pontano Sans', sans-serif;
@@ -172,7 +176,7 @@
     }
     
     main {
-      max-width: 100%; /* Ensure main content spans full width */
+      max-width: 100%; 
       margin: 0 auto;
       padding: 20px;
       color: white;
@@ -181,24 +185,24 @@
     } 
     
     .header-image {
-      width: 100vw; /* Full viewport width */
-      height: 6in; /* 2 inches tall */
+      width: 100vw; 
+      height: 6in; 
       overflow: hidden;
-      margin: 0; /* Remove any margin to ensure full width */
-      position: relative; /* Allows for positioning the image */
+      margin: 0;
+      position: relative; 
     }
     
     .header-image img {
-      position: absolute; /* Remove the image from the document flow */
-      top: 50%; /* Position the image at the center of the container */
+      position: absolute; 
+      top: 50%; 
       left: 42%;
-      width: 100vw; /* Full viewport width */
-      height: auto; /* Maintain aspect ratio */
-      min-height: 100%; /* Ensure the image covers the height */
-      object-fit: cover; /* Cover the container without stretching */
-      object-position: center; /* Center the image */
-      transform: translate(-50%, -50%); /* Adjust to center the image */
-      display: block; /* Remove any extra space below the image */
+      width: 100vw; 
+      height: auto; 
+      min-height: 100%; 
+      object-fit: cover;
+      object-position: center; 
+      transform: translate(-50%, -50%); 
+      display: block; 
     }
     
     .header-text {
@@ -222,7 +226,7 @@
     .doqvault {
       position: absolute;
       top: 10px;
-      right: 130px; /* Adjust this value to move the button left */
+      right: 130px; 
     }
     
     .doqvault-button {
@@ -239,7 +243,7 @@
       font-size: 1em;
       font-family: 'adonis-web', sans-serif;
       cursor: pointer;
-      text-align: center; /* Ensure text is centered horizontally */
+      text-align: center;
       line-height: 1.2;
     }
     
@@ -254,21 +258,21 @@
       font-weight: 10;
       font-size: 18px;
       letter-spacing: 1px;
-      margin-top: 120px; /* Moves the text down by 120px */
+      margin-top: 120px; 
       margin-bottom: 100px;
       width: 650px;
-      margin-left: auto; /* Centers the h1 element horizontally */
-      margin-right: auto; /* Centers the h1 element horizontally */
+      margin-left: auto; 
+      margin-right: auto; 
       line-height: 2;
     }
   
     .header-container {
-    display: flex; /* Enable Flexbox layout */
-    align-items: baseline; /* Align items vertically */
+    display: flex; 
+    align-items: baseline;
     font-size: 1em;
     font-weight: 100;
     margin-bottom: 10px;
-    margin-left: 360px; /* Adjust margin as needed */
+    margin-left: 360px;
   }
   
 
@@ -276,7 +280,7 @@
   h2 {
     color: rgba(0, 0, 0, 0.954);
     font-family: 'Pontano Sans', sans-serif;
-    margin: 0; /* Remove default margins */
+    margin: 0; 
     font-size: 1em;
     font-weight: 100;
     margin-right: 0px; 
@@ -286,7 +290,7 @@
   .pinecone-container {
     display: flex;
     justify-content: center;
-    align-items: baseline; /* Align items vertically */
+    align-items: baseline; 
     font-size: 1em;
     font-weight: 100;
     margin-bottom: 10px;
@@ -311,7 +315,7 @@
   }
   
   .pinecone-input:hover {
-    background-color: rgba(255, 255, 255, 0.5); /* Translucent white */
+    background-color: rgba(255, 255, 255, 0.5); 
   }
   
   
@@ -327,7 +331,7 @@
   .hubspot-container {
     display: flex;
     justify-content: center;
-    align-items: baseline; /* Align items vertically */
+    align-items: baseline; 
     font-size: 1em;
     font-weight: 100;
     margin-bottom: 10px;
@@ -351,7 +355,7 @@
   }
 
   .hubspot-input:hover {
-    background-color: rgba(255, 255, 255, 0.5); /* Translucent white */
+    background-color: rgba(255, 255, 255, 0.5);
   }
   
   .submit-button {
@@ -381,12 +385,12 @@
   }
   
   .error-message::before {
-    content: " ⓘ "; /* Exclamation emoji */
+    content: " ⓘ "; 
     position: absolute;
-    left: 15px; /* Adjust as needed */
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px; /* Adjust size as needed */
+    font-size: 20px;
   }
   
   .error-message {
