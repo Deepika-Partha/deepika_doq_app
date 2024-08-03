@@ -38,7 +38,7 @@
       } catch (error) {
           console.error('Error occurred:', error.message);
 
-          // Create a new error container
+          // Error container: This is positioned at the bottom of the user's screen
           const errorContainer = document.createElement('div');
           errorContainer.id = 'error-container'; // ID to identify the container, this helps clear error message if error is resolved
           errorContainer.style.position = 'fixed';
@@ -76,6 +76,7 @@
           return;
       }
 
+      // IMPORTANT: The keys get stored in a dictionary called dictionary
       dictionary = {
           pineconeKey: pineconeKey,
           hubspotKey: hubspotKey,
