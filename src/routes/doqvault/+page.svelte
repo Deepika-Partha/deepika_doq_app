@@ -134,10 +134,10 @@
     width: 10in;
     min-height: 200px;
     padding: 20px;
-    margin: 40px auto; /* Centers horizontally and adds vertical spacing */
+    margin: 40px auto; 
     background-color: rgb(255, 255, 255);
     color: black;
-    display: block; /* Ensures that the element is treated as a block-level element */
+    display: block; 
     font-family: 'adnois-web', sans-serif;
     /* display: none; */
   }
@@ -148,7 +148,7 @@
     padding: 10px;
     background-color: rgb(255, 255, 255);
     color: black;
-    display: block; /* Ensures that the element is treated as a block-level element */
+    display: block; 
     font-family: 'adnois-web', sans-serif;
     /* display: none; */
   }
@@ -167,17 +167,17 @@
         border-radius: 20px;
         display: flex;
         align-items: center;
-        justify-content: center; /* Center the content horizontally */
+        justify-content: center; 
         color: white;
         font-size: 1.2em;
         font-family: 'adonis-web', sans-serif;
         cursor: pointer;
-        padding: 60px 20px; /* Adjust padding for better responsiveness */
-        max-width: 100%; /* Ensure the button does not exceed the container width */
+        padding: 60px 20px;
+        max-width: 100%;
         max-height: 100%;
-        box-sizing: border-box; /* Include padding and border in the element’s total width and height */
-        text-align: center; /* Center the text inside the button */
-        width: auto; /* Let width adjust automatically based on content */
+        box-sizing: border-box;
+        text-align: center; 
+        width: auto; 
 
     }
 
