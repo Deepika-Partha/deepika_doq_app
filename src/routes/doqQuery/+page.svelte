@@ -27,10 +27,10 @@
 
   function handleSearch() {
     fetchData(searchQuery);
-    searchQuery = ''; // Clear the search box after searching
+    searchQuery = ''; 
   }
 
-  // Preprocess data
+
   $: formattedData = data?.map(item => {
     const parts = item.split(': ');
     return {
@@ -106,7 +106,7 @@
 /* orange: background-color: #E9CEB0; */
 
 :global(body) {
-  background-color: #ffffff; /* Light orange */
+  background-color: #ffffff; 
   margin: 0;
   padding: 0;
   font-family: 'Pontano Sans', sans-serif;
@@ -122,7 +122,7 @@ main.custom-background {
 }
 
 main {
-  max-width: 100%; /* Ensure main content spans full width */
+  max-width: 100%; 
   margin: 0 auto;
   padding: 20px;
   color: white;
@@ -131,24 +131,24 @@ main {
 } 
 
 .header-image {
-  width: 100vw; /* Full viewport width */
-  height: 2.3in; /* 2 inches tall */
+  width: 100vw; 
+  height: 2.3in; 
   overflow: hidden;
-  margin: 0; /* Remove any margin to ensure full width */
-  position: relative; /* Allows for positioning the image */
+  margin: 0; 
+  position: relative;
 }
 
 .header-image img {
-  position: absolute; /* Remove the image from the document flow */
-  top: 50%; /* Position the image at the center of the container */
+  position: absolute; 
+  top: 50%; 
   left: 42%;
-  width: 100vw; /* Full viewport width */
-  height: auto; /* Maintain aspect ratio */
-  min-height: 100%; /* Ensure the image covers the height */
-  object-fit: cover; /* Cover the container without stretching */
-  object-position: center; /* Center the image */
-  transform: translate(-50%, -50%); /* Adjust to center the image */
-  display: block; /* Remove any extra space below the image */
+  width: 100vw; 
+  height: auto; 
+  min-height: 100%; 
+  object-fit: cover; 
+  object-position: center; 
+  transform: translate(-50%, -50%); 
+  display: block; 
 }
 
 .header-text {
@@ -163,7 +163,7 @@ main {
 .doqvault {
   position: absolute;
   top: 10px;
-  right: 130px; /* Adjust this value to move the button left */
+  right: 130px; 
 }
 
 .doqvault-button {
@@ -180,7 +180,7 @@ main {
   font-size: 1em;
   font-family: 'adonis-web', sans-serif;
   cursor: pointer;
-  text-align: center; /* Ensure text is centered horizontally */
+  text-align: center; 
   line-height: 1.2;
 }
 
@@ -217,7 +217,7 @@ h2 {
   width: 450px;
   padding: 10px;
   font-size: 16px;
-  border: 2px solid white; /* White border */
+  border: 2px solid white; 
   border-radius: 30px 0 0 30px;
   outline: none;
   background-color: #E9CEB0;
@@ -226,16 +226,14 @@ h2 {
   transition: placeholder-color 0.3s ease; 
 }
 
-/* Hide placeholder on hover */
-
 
 .search-input:hover::placeholder {
-  color: transparent; /* Ensure placeholder is hidden on hover */
+  color: transparent; 
 }
 
-/* Optionally, style the input text color when focused */
+
 .search-input:focus {
-  color: black; /* Change text color when input is focused */
+  color: black; 
 }
 
 .go-button {
@@ -257,10 +255,10 @@ h2 {
   width: 10in;
   min-height: 70px;
   padding: 10px;
-  margin: 20px auto; /* Centers horizontally and adds vertical spacing */
+  margin: 20px auto;
   background-color: rgb(255, 255, 255);
   color: black;
-  display: block; /* Ensures that the element is treated as a block-level element */
+  display: block; 
   font-family: 'adnois-web', sans-serif;
 }
 
@@ -321,6 +319,6 @@ h2 {
 }
 
 .ticket-box p:not(:first-of-type) {
-  margin-top: 10px; /* Add space between subject and content */
+  margin-top: 10px; 
 }
 </style>
