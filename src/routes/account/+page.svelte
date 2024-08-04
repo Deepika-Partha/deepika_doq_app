@@ -7,7 +7,7 @@
   let message = ''; // Variable to hold validation messages
   let messageType = ''; // To differentiate between error and success messages
 
-  async function fetchTickets(apiKey) {
+  async function fetchTickets(hubspotKey, pineconeKey) {
     try {  
       // Remove existing error container if present before making a new request
       const existingErrorContainer = document.getElementById('error-container');
@@ -21,11 +21,11 @@
           'Content-Type': 'application/json'
         },
          
-        body: JSON.stringify({ api_key: apiKey })
+        body: JSON.stringify({ hubspotKey: hubspotKey, pineconeKey: pineconeKey })
       });
 
       if (!response.ok) {
-        throw new Error('Invalid HubSpot API key was provided ' + response.statusText);
+        throw new Error('Invalid key was provided ' + response.statusText);
       }
 
       const data = await response.json();
@@ -85,7 +85,7 @@
 
     console.log(dictionary); 
 
-    fetchTickets(dictionary.hubspotKey);
+    fetchTickets(dictionary.hubspotKey, dictionary.pineconeKey);
   }
 </script>
 
