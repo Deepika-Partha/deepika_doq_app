@@ -9,6 +9,9 @@
 
   async function fetchTickets(hubspotKey, pineconeKey) {
     try {  
+
+      document.getElementById('loading-indicator').style.display = 'block';
+      
       // Remove existing error container if present before making a new request
       const existingErrorContainer = document.getElementById('error-container');
       if (existingErrorContainer) {
@@ -31,6 +34,9 @@
       const data = await response.json();
       console.log(data);
 
+      // Hide loading indicator
+      document.getElementById('loading-indicator').style.display = 'none';
+
       goto('/doqQuery');
 
       // In case the data returned is needed
@@ -38,6 +44,9 @@
 
     } catch (error) {
       console.error('Error occurred:', error.message);
+
+      // Hide loading indicator
+      document.getElementById('loading-indicator').style.display = 'none';
 
       // Error container: This is positioned at the bottom of the user's screen
       const errorContainer = document.createElement('div');
@@ -90,6 +99,10 @@
 </script>
 
 <main class="custom-background">
+
+  <div id="loading-indicator" class="loading-indicator">
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXZ4NHkwdWNtdWthcHZmN3IxdTNyOGNqdHkyNm42dnE1MzRkejVlMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7bu3XilJ5BOiSGic/giphy.gif" alt="Loading..." />
+  </div>
 
   <div class="header-image">
     <!-- svelte-ignore a11y-img-redundant-alt -->
@@ -416,5 +429,20 @@
       margin-top: 10px;
       font-size: 18px;
     }
+
+  .loading-indicator {
+  position: fixed;
+  top: calc(50% + 20px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: none; /* Initially hidden */
+}
+
+.loading-indicator img {
+  width: 150px; /* Adjust as needed */
+  height: auto;
+}
+  
 
 </style>
