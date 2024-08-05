@@ -100,24 +100,6 @@ def get_tickets():
         faqs = format_tickets_to_faqs(formatted_tickets)
         myFAQs = group_faqs(faqs)
 
-        # Debug: Print current working directory and file path
-        print(f"Current Working Directory: {os.getcwd()}")
-        faq_folder_path = os.path.join(os.getcwd(), 'src', 'routes', 'faqDocs')
-        print(f"FAQ Folder Path: {faq_folder_path}")
-
-        # Create the directory if it doesn't exist
-        os.makedirs(faq_folder_path, exist_ok=True)
-        faq_file_path = os.path.join(faq_folder_path, 'myFAQs.txt')
-
-        # Debug: Print file path
-        print(f"FAQ File Path: {faq_file_path}")
-
-        try:
-            with open(faq_file_path, "w") as file:
-                file.write(grouped_faqs)
-        except IOError as e:
-            return jsonify({"error": f"File I/O error: {str(e)}"}), 500)
-
         return jsonify({"myFAQs": myFAQs})
 
     except ApiException as e:
