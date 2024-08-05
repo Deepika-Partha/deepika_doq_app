@@ -5,7 +5,7 @@
   let hubspotKey = '';
   let dictionary = {};
   let message = ''; // Variable to hold validation messages
-  let messageType = ''; // To differentiate between error and success messages
+  let messageType = ''; // Variable to differentiate between error and success messages
 
   async function fetchTickets(hubspotKey, pineconeKey) {
     try {  
@@ -92,6 +92,7 @@
       hubspotKey: hubspotKey,
     };
 
+    sessionStorage.setItem('dictionary', JSON.stringify(dictionary));
     console.log(dictionary); 
 
     fetchTickets(dictionary.hubspotKey, dictionary.pineconeKey);
@@ -101,7 +102,7 @@
 <main class="custom-background">
 
   <div id="loading-indicator" class="loading-indicator">
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXZ4NHkwdWNtdWthcHZmN3IxdTNyOGNqdHkyNm42dnE1MzRkejVlMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7bu3XilJ5BOiSGic/giphy.gif" alt="Loading..." />
+    <img src="/spinner.gif" alt="Loading..." />
   </div>
 
   <div class="header-image">
