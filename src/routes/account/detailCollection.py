@@ -62,7 +62,7 @@ def group_faqs(faqs):
     return myFAQs.choices[0].message.content
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST', 'GET'])
 def get_tickets():
 
     data = request.json
