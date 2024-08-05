@@ -1,11 +1,11 @@
 <script>
-  import { qaStore } from '../../stores.js';
+  import { dictionary, qaStore } from '../../stores.js';
 
   let searchQuery = '';
   let error = null;
   let data = null;
 
-  async function fetchData(query) {
+  async function fetchData(pinconeKey, query) {
     try {
       console.log('Fetching data...');
       const response = await fetch('/api/wrapper/', {  
@@ -13,7 +13,7 @@
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query })
+        body: JSON.stringify({ pinekoneKey: pineconeKey, query: query })
       });
       if (!response.ok) {
         throw new Error(`HTTP error ${response.status}`);
@@ -26,6 +26,8 @@
   }
 
   function handleSearch() {
+    const dict = JSON.parse(sessionStorage.getItem('dictionary') || '{}');
+    pinekoneKey = dictionary.pinekoneKey
     fetchData(searchQuery);
     searchQuery = ''; 
   }

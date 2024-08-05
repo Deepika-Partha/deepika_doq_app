@@ -1,49 +1,96 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, jsonify 
+from flask_cors import CORS 
 
-<<<<<<< HEAD
-import hubspot  # type: ignore
-from hubspot.crm.tickets import ApiException    # type: ignore
+import hubspot 
+from hubspot.crm.tickets import ApiException    
 
-import pinecone # type: ignore
-from pinecone import Pinecone, ServerlessSpec   # type: ignore
-=======
-import hubspot
-from hubspot.crm.tickets import ApiException
->>>>>>> 519b529d799fdf1e1d87c3f199872aba5982e2b2
+import pinecone 
+from pinecone import Pinecone, ServerlessSpec   
 
-import pinecone
-from pinecone import Pinecone, ServerlessSpec
-
-import openai
-from openai import OpenAI
+import openai  
+from openai import OpenAI 
 
 import os
 
 
 app = Flask(__name__)
-# CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 client = OpenAI(api_key="sk-t9kHlq70OHZB_6pCu5zGaT0MhO8kCqWoBWNrojMJ_GT3BlbkFJXTX71ff5CE_kTtKBl3XHWTFc5hSG1yQ4ea6Vj5OIwA")
 
-def create_pinecone_index():
+@app.route('/', methods=['POST'])
+def main():
+    data = request.json
+    hubspotKey = data.get('hubspotKey')
+    if not hubspotKey:
+        return jsonify({"error": "API key is required"}), 400
+    
     data = request.json
     pineconeKey = data.get('pineconeKey')
     if not pineconeKey:
         return jsonify({"error": "API key is required"}), 400
-        
-    try:
-        pc = Pinecone(api_key=pineconeKey)
     
+    formatted_tickets = get_tickets(hubspotKey)
+    faqs = format_tickets_to_faqs(formatted_tickets)
+    myFAQs = group_faqs(faqs)
+
+    create_index_response, status_code = create_pinecone_index(pineconeKey)
+    if status_code != 200:
+        return jsonify(create_index_response), 500
+    
+    upsert_tickets(pineconeKey, formatted_tickets)
+
+    return jsonify({"myFAQs": myFAQs})
+
+def upsert_tickets(pineconeKey, formatted_tickets):
+
+    try:
+        pc = Pinecone(api_key=pineconeKey, environment="us-east-1")
+        index = pc.Index('doq-query')
+
+        for ticket in formatted_tickets:
+            content_to_embed = ticket.get('content', '')
+
+            if content_to_embed:
+                response = client.embeddings.create(input=content_to_embed, model="text-embedding-3-small")
+                embedding = response.data[0].embedding
+
+                metadata = {
+                    "subject": ticket.get('subject', ''),
+                    "content": ticket.get('content', '')
+                }
+
+                index.upsert([{"id": ticket['id'], "values": embedding, "metadata": metadata}])
+
+        vectors = []
+
+        for ticket in formatted_tickets:
+            vector_item = {}
+            vector_item["id"] = ticket.id
+            vector_item["metadata"] = metadata = {"subject": ticket.properties.get('subject', ''),"content": ticket.properties.get('content', '')}
+            vector_item["values"] = embedding
+            vectors.append(vector_item)
+
+            upsert_response = index.upsert(
+                vectors = vectors,
+                namespace="example-namespace"
+            )
+    except Exception as e:
+        print(f"Error during upsert_tickets: {e}")
+    
+
+def create_pinecone_index(pineconeKey):
+    api_key = pineconeKey
+    try:
+        pc = Pinecone(api_key=api_key)
         pc.create_index(
-          name="doq-query",
-          dimension=1536,
-          metric="cosine",
-          spec=ServerlessSpec(
-            cloud="aws",
-            region="us-east-1"
-          )
+            name="doq-query",
+            dimension=1536,
+            metric="cosine",
+            spec=ServerlessSpec(
+                cloud="aws",
+                region="us-east-1"
+            )
         )
         return {"message": "Index created successfully"}, 200
     except Exception as e:
@@ -70,16 +117,9 @@ def group_faqs(faqs):
     return myFAQs.choices[0].message.content
 
 
-@app.route('/', methods=['POST', 'GET'])
-def get_tickets():
+def get_tickets(hubspotKey):
 
-    data = request.json
-    hubspotKey = data.get('hubspotKey')
-    if not hubspotKey:
-        return jsonify({"error": "API key is required"}), 400
     client = hubspot.Client.create(access_token=hubspotKey)
-   
-    
     try:
         limit = 10
         after = None
@@ -100,18 +140,9 @@ def get_tickets():
             
             for ticket in tickets
         ]
-
-        create_index_response, status_code = create_pinecone_index()
-        if status_code != 200:
-            return jsonify(create_index_response), 500
-            
-        faqs = format_tickets_to_faqs(formatted_tickets)
-        myFAQs = group_faqs(faqs)
-
-        return jsonify({"myFAQs": myFAQs})
-
+        return formatted_tickets
+    
     except ApiException as e:
-        # Handle exceptions and return an error message
         error_message = f"Exception when calling TicketsApi->get_page: {e}\n"
         return jsonify({"error": error_message}), 500
 
