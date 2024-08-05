@@ -1,14 +1,22 @@
-from flask import Flask, request, jsonify # type: ignore
-from flask_cors import CORS # type: ignore
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
+<<<<<<< HEAD
 import hubspot  # type: ignore
 from hubspot.crm.tickets import ApiException    # type: ignore
 
 import pinecone # type: ignore
 from pinecone import Pinecone, ServerlessSpec   # type: ignore
+=======
+import hubspot
+from hubspot.crm.tickets import ApiException
+>>>>>>> 519b529d799fdf1e1d87c3f199872aba5982e2b2
 
-import openai   # type: ignore
-from openai import OpenAI   # type: ignore
+import pinecone
+from pinecone import Pinecone, ServerlessSpec
+
+import openai
+from openai import OpenAI
 
 import os
 
