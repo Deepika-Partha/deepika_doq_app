@@ -5,46 +5,58 @@
   let error = null;
   let data = null;
 
-  async function fetchData(pinconeKey, query) {
+  async function fetchData(query) {
+
+    document.getElementById('loading-indicator').style.display = 'block';
+    const dictionary = JSON.parse(sessionStorage.getItem('dictionary') || '{}');
+    const pineconeKey = dictionary.pineconeKey;
+    console.log('Pinecone Key:', pineconeKey);
+
     try {
       console.log('Fetching data...');
-      const response = await fetch('/api/wrapper/', {  
+      const response = await fetch('https://doq-vault-app.onrender.com', {  
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ pinekoneKey: pineconeKey, query: query })
+        body: JSON.stringify({ pineconeKey: pineconeKey, query: query })
       });
       if (!response.ok) {
         throw new Error(`HTTP error ${response.status}`);
       }
       data = await response.json();
+      document.getElementById('loading-indicator').style.display = 'none';
       console.log("Fetched Data: ", data);
+      return data
+      
     } catch (err) {
+      document.getElementById('loading-indicator').style.display = 'none';
       error = err.message;
     }
   }
 
   function handleSearch() {
-    const dict = JSON.parse(sessionStorage.getItem('dictionary') || '{}');
-    pinekoneKey = dictionary.pinekoneKey
     fetchData(searchQuery);
     searchQuery = ''; 
   }
 
-
-  $: formattedData = data?.map(item => {
-    const parts = item.split(': ');
-    return {
-      subject: parts[0],
-      content: parts.slice(1).join(': ')
-    };
-  });
+  function formatData(data) {
+    // Convert the data object to a plain text format
+    if (typeof data === 'object') {
+      return Object.entries(data).map(([key, value]) => `${key}: ${value}`).join('\n');
+    }
+    return data;
+  }
 </script>
 
 
 
 <main class="custom-background">
+
+  <div id="loading-indicator" class="loading-indicator">
+    <img src="/spinner.gif" alt="Loading..." />
+  </div>
+
   <div class="header-image">
     <!-- svelte-ignore a11y-img-redundant-alt -->
     <img src="https://images.squarespace-cdn.com/content/v1/64ba92ff4c24fe41a3c67b1d/1689953074945-9WI8FKUEAOY9HQX8636Q/Sleek+Objects+1.jpg" alt="Header Image">
@@ -72,15 +84,8 @@
   </div>
 
   <div class="answer-box">
-      {#if formattedData}
-        <div>
-          {#each formattedData as { subject, content }, index}
-            <div class="ticket-box">
-              <p><strong>{subject}</strong></p>
-              <p>{content}</p>
-            </div>
-          {/each}
-        </div>
+      {#if data}
+        <p class="response-message">{formatData(data)}</p>
       {:else if error}
         <p class="error-message">Error: {error}</p>
       {/if}
@@ -268,6 +273,17 @@ h2 {
   color: red;
 }
 
+.response-message {
+  color: rgb(0, 0, 0);
+  white-space: pre-wrap; 
+  background-color: #ffffff; 
+  padding: 10px;
+  border-radius: 5px;
+  font-family: 'adonis-web', sans-serif;
+  font-size: 16px;
+  
+}
+
 .faq-boxes {
   display: flex;
   justify-content: center;
@@ -277,7 +293,7 @@ h2 {
 .faq-button {
   width: 1.5in;
   height: 60px;
-  background-color: hsla( 22.54,88.72%,61.76% ,1);
+  background-color: #f48847;
   border: none;
   border-radius: 30px;
   display: flex;
@@ -294,33 +310,18 @@ h2 {
   background-color: rgba(189, 107, 6, 0.81);
 }
 
-.ticket-box:hover {
-  background-color: rgba(233, 206, 176, 0.263);
+.loading-indicator {
+  position: fixed;
+  top: calc(50% + 20px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: none; /* Initially hidden */
 }
 
-.ticket-box {
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #ffffff;
-
+.loading-indicator img {
+  width: 150px; /* Adjust as needed */
+  height: auto;
 }
 
-.ticket-box p {
-  margin: 0;
-  font-family: 'Pontano Sans', sans-serif;
-  font-weight: 200;
-  font-size: 1em;
-}
-
-.ticket-box strong {
-  color: #000000;
-  font-family: 'Pontano Sans', sans-serif;
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.ticket-box p:not(:first-of-type) {
-  margin-top: 10px; 
-}
 </style>
