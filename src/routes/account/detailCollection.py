@@ -1,14 +1,14 @@
-from flask import Flask, request, jsonify 
-from flask_cors import CORS 
+from flask import Flask, request, jsonify  # type: ignore
+from flask_cors import CORS # type: ignore
 
-import hubspot 
-from hubspot.crm.tickets import ApiException    
+import hubspot # type: ignore
+from hubspot.crm.tickets import ApiException   # type: ignore 
 
-import pinecone 
-from pinecone import Pinecone, ServerlessSpec   
+import pinecone # type: ignore
+from pinecone import Pinecone, ServerlessSpec   # type: ignore
 
-import openai  
-from openai import OpenAI 
+import openai  # type: ignore
+from openai import OpenAI # type: ignore
 
 import os
 
@@ -59,8 +59,9 @@ def upsert_tickets(pineconeKey, formatted_tickets):
                     "subject": ticket.get('subject', ''),
                     "content": ticket.get('content', '')
                 }
-
-                index.upsert([{"id": ticket['id'], "values": embedding, "metadata": metadata}])
+                
+                unique_id = f"{ticket.get('subject', '')}_{ticket.get('content', '')}"
+                index.upsert([{"id": unique_id, "values": embedding, "metadata": metadata}])
 
         vectors = []
 
